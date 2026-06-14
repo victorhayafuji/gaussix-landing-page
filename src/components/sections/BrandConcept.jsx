@@ -1,4 +1,3 @@
-// Force HMR update
 export default function BrandConcept() {
   return (
     <section className="section-pad" id="conceito">

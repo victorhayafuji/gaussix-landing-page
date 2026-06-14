@@ -10,7 +10,7 @@ A landing page da **GAUSSIX** comunica uma empresa premium de **tecnologia aplic
 
 A GAUSSIX **não é** apenas "AI Data Analysis", BI puro, consultoria genérica, agência de sites ou software house genérica. Os Dados são o **DNA técnico** da marca, mas não limitam o escopo. O posicionamento correto: *a GAUSSIX cria soluções digitais usando Dados, IA, automação, design e engenharia para ajudar empresas a vender melhor, operar melhor e decidir melhor.*
 
-O **FlowIA** é o produto SaaS proprietário da GAUSSIX (ver Seções 7 e 8) — prova de capacidade técnica, nunca uma marca separada.
+O **FlowIA** é o produto SaaS proprietário da GAUSSIX (ver Seção 7 e [`docs/BUSINESS_RULES.md`](docs/BUSINESS_RULES.md)) — prova de capacidade técnica, nunca uma marca separada.
 
 A experiência visual é:
 - **técnica**, porém elegante;
@@ -27,6 +27,7 @@ O monólito original (página de arquivo único, preservado no histórico do Git
 
 ```text
 /
+├── README.md                     # Visão geral do projeto (vitrine do repositório)
 ├── index.html                    # Entry point do Vite (carrega main.jsx)
 ├── package.json                  # Dependências e scripts (dev/build/preview/lint)
 ├── vite.config.js                # Configuração do Vite + React Plugin + Tailwind v4 Plugin
@@ -57,7 +58,7 @@ O monólito original (página de arquivo único, preservado no histórico do Git
 │       │   ├── Credibility.jsx      # Seção 01 - Posicionamento (3 cards analíticos)
 │       │   ├── Solutions.jsx        # Seção 02 - Soluções (6 cards com visualizações específicas)
 │       │   ├── Methodology.jsx      # Seção 03 - Método (Linha animada SVG e etapas)
-│       │   ├── BrandConcept.jsx     # Seção 04 - Conceito (Glifo X e legenda explicativa)
+│       │   ├── BrandConcept.jsx     # Seção 04 - Produto em destaque (FlowIA, glifo X e legenda)
 │       │   ├── UseCases.jsx         # Seção 05 - Casos de uso
 │       │   └── FinalCTA.jsx         # Seção 06 - Chamada final / contato (skips canvas no mobile)
 │       └── ui/
@@ -85,7 +86,7 @@ O monólito original (página de arquivo único, preservado no histórico do Git
 Carregadas no `index.html`:
 - **Michroma** (utilizado no Wordmark e em legendas selecionadas)
 - **Space Grotesk** (font-family padrão do corpo e de displays)
-- **JetBrains Mono** (usada para códigos de telemetria, dados e detalhes de console)
+- **JetBrains Mono** (usada para códigos de telemetria, dados e detalhes técnicos)
 
 ---
 
@@ -127,11 +128,17 @@ npm run lint
 - **O problema:** Em modo de desenvolvimento, o React monta e limpa os hooks duas vezes consecutivas para validar vazamentos de memória. Limpar a classe `reveal-armed` ou `.in` na desmontagem fazia com que elementos que já estavam no viewport fossem re-ocultados e ficassem invisíveis para sempre (já que a animação é de disparo único).
 - **A solução:** A limpeza de desmontagem do hook `useReveal.js` preserva o estado das classes CSS já atribuídas às tags do DOM, assegurando estabilidade em mounts múltiplos e evitando "flashes" ou sumiço de conteúdo.
 
+### 5.4 Endurecimento da auditoria (organização e robustez)
+- **Fonte única de conteúdo:** `Solutions.jsx` e os links de soluções do `Footer.jsx` passaram a ler do array `solutions` em `content.js` (antes os textos eram hardcoded e o array estava sem uso).
+- **Cleanup de canvas:** `GaussField.js` guarda o `rafId` e chama `cancelAnimationFrame` em `destroy()`/`pause()`.
+- **Código morto/legado removido:** prop `showSubDashes` no Wordmark, `EngineConsole.jsx` (órfão), `assets/` e `monolith.html`.
+- **Tooling:** ESLint (flat config + script `lint`), `.gitignore` e repositório Git inicializados.
+
 ---
 
 ## 6. Padrões de código para edição
 
-- **Textos e Cópia:** Todo o texto editável está concentrado em `src/data/content.js`. Evite codificar textos diretamente nas seções para facilitar futuras traduções ou refinamentos de copy.
+- **Textos e Cópia:** O conteúdo estruturado (soluções, casos, etapas, telemetria) fica em `src/data/content.js`; parte da copy (eyebrows, títulos de seção, leads, CTAs) ainda é inline nas seções. Veja a Seção 8 para o que editar onde. Prefira `content.js` sempre que aplicável.
 - **Identidade Visual:** Respeite rigorosamente a paleta de cores roxo/laranja e a metáfora da curva gaussiana. Não altere o visual do hero canvas ou do painel de telemetria sem o aval do usuário.
 - **Acessibilidade:** Garanta tags HTML semânticas (`<section>`, `<article>`, `<header>`, `<footer>`) e tags descritivas em links e SVGs.
 
