@@ -208,7 +208,7 @@ h1,h2,h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0.0
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
 }
 
 /* ============================================================ Reveal on scroll */
@@ -217,9 +217,7 @@ h1,h2,h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0.0
 }
 html.reveal-armed .reveal { opacity: 0; translate: 0 38px; }
 html.reveal-armed .reveal[data-rv="left"]   { translate: -46px 0; }
-html.reveal-armed .reveal[data-rv="right"]  { translate: 46px 0; }
 html.reveal-armed .reveal[data-rv="scale"]  { translate: 0 22px; scale: .92; }
-html.reveal-armed .reveal[data-rv="up-lg"]  { translate: 0 66px; }
 .reveal.in, html.reveal-armed .reveal.in { opacity: 1; translate: 0 0; scale: 1; }
 
 .reveal[data-d="1"]{ transition-delay:.08s } .reveal[data-d="2"]{ transition-delay:.16s }
@@ -247,9 +245,8 @@ html.reveal-armed .section-head.reveal .lead {
 html.reveal-armed .section-head.reveal:not(.in) .eyebrow::before { width: 0; }
 
 @media (prefers-reduced-motion: reduce){
-  .reveal, .section-head.reveal .eyebrow, .section-head.reveal h2, .section-head.reveal .lead {
-    opacity:1 !important; translate:none !important; scale:none !important;
-  }
+  /* Reveal/entrance animations run regardless of reduced-motion (product
+     decision). Smooth-scroll is still disabled to keep anchor jumps instant. */
   html { scroll-behavior: auto; }
 }
 
@@ -261,7 +258,7 @@ html.reveal-armed .section-head.reveal:not(.in) .eyebrow::before { width: 0; }
 }
 .nav.scrolled {
   background: rgba(6,5,10,.72);
-  backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
   border-bottom: 1px solid var(--line);
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
@@ -290,13 +287,13 @@ body.menu-open .burger span:nth-child(2){ opacity: 0; }
 body.menu-open .burger span:nth-child(3){ transform: translateY(-6.6px) rotate(-45deg); }
 .mobile-menu {
   position: fixed; inset: 76px 0 auto 0; z-index: 55;
-  background: rgba(6,5,10,.96); backdrop-filter: blur(16px);
+  background: rgba(6,5,10,.96); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
   display: flex; flex-direction: column; padding: 18px 24px 30px;
-  transform: translateY(-12px); opacity: 0; pointer-events: none;
-  transition: transform var(--t), opacity var(--t);
+  transform: translateY(-12px); opacity: 0; pointer-events: none; visibility: hidden;
+  transition: transform var(--t), opacity var(--t), visibility var(--t);
 }
-body.menu-open .mobile-menu { transform: none; opacity: 1; pointer-events: auto; }
+body.menu-open .mobile-menu { transform: none; opacity: 1; pointer-events: auto; visibility: visible; }
 .mobile-menu a { font-family: var(--f-mono); font-size: 15px; color: var(--ink-dim); padding: 15px 0; border-bottom: 1px solid var(--line); }
 .mobile-menu .btn { margin-top: 22px; justify-content: center; }
 
@@ -506,7 +503,7 @@ body.menu-open .mobile-menu { transform: none; opacity: 1; pointer-events: auto;
 /* ============================================================ Footer */
 .footer { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 64px 0 40px; margin-top: 0; }
 .foot-grid { display:grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
-.foot-col h4 { font-family: var(--f-mono); font-size: 11px; letter-spacing:.2em; text-transform:uppercase; color: var(--muted); margin-bottom: 18px; }
+.foot-col h3 { font-family: var(--f-mono); font-size: 11px; font-weight: 700; line-height: 1.6; letter-spacing:.2em; text-transform:uppercase; color: var(--muted); margin-bottom: 18px; }
 .foot-col a { display:block; color: var(--ink-dim); font-size: 14.5px; padding: 6px 0; transition: color var(--t-fast); }
 .foot-col a:hover { color: var(--orange); }
 .foot-about { max-width: 34ch; color: var(--muted); font-size: 14.5px; margin-top: 20px; line-height:1.6; }
@@ -526,7 +523,7 @@ body.menu-open .mobile-menu { transform: none; opacity: 1; pointer-events: auto;
   background:
     linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.012)),
     rgba(10,8,16,.72);
-  backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
   box-shadow: 0 40px 120px -50px rgba(139,44,246,.55), 0 2px 0 rgba(255,255,255,.05) inset;
 }
 .engine::before {
@@ -592,18 +589,17 @@ body.menu-open .mobile-menu { transform: none; opacity: 1; pointer-events: auto;
 .brandbar .p { flex: 1;    background: var(--purple); box-shadow: 0 0 14px rgba(139,44,246,.5); }
 
 /* ============================================================ Hero entrance cascade */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-badge, .hero h1, .hero .lead, .hero-cta {
-    opacity: 0; animation: heroIn 1s var(--ease-out) forwards;
-  }
-  .hero-badge { animation-delay: .12s; }
-  .hero h1    { animation-delay: .26s; }
-  .hero .lead { animation-delay: .46s; }
-  .hero-cta   { animation-delay: .64s; }
+/* Runs regardless of reduced-motion (product decision). */
+.hero-badge, .hero h1, .hero .lead, .hero-cta {
+  opacity: 0; animation: heroIn 1s var(--ease-out) forwards;
 }
+.hero-badge { animation-delay: .12s; }
+.hero h1    { animation-delay: .26s; }
+.hero .lead { animation-delay: .46s; }
+.hero-cta   { animation-delay: .64s; }
 @keyframes heroIn {
-  from { opacity: 0; transform: translateY(26px); filter: blur(8px); }
-  to   { opacity: 1; transform: none; filter: none; }
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* extra travel for cards on reveal — armed-gated */

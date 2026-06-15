@@ -1,10 +1,13 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Wordmark from '../ui/Wordmark';
 
 export default function Navbar() {
+  const navRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // Scroll handler for .scrolled state
   useEffect(() => {
-    const nav = document.querySelector('.nav');
+    const nav = navRef.current;
     if (!nav) return;
     const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
     onScroll();
@@ -12,20 +15,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Mobile menu
-  const handleBurgerClick = useCallback(() => {
-    const open = document.body.classList.toggle('menu-open');
-    const burger = document.querySelector('.burger');
-    if (burger) burger.setAttribute('aria-expanded', String(open));
-  }, []);
+  // Mirror the mobile-menu open state onto the body class the CSS keys off.
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', menuOpen);
+    return () => document.body.classList.remove('menu-open');
+  }, [menuOpen]);
 
-  const closeMobileMenu = useCallback(() => {
-    document.body.classList.remove('menu-open');
-  }, []);
+  const toggleMenu = useCallback(() => setMenuOpen((o) => !o), []);
+  const closeMobileMenu = useCallback(() => setMenuOpen(false), []);
 
   return (
     <>
-      <header className="nav">
+      <header className="nav" ref={navRef}>
         <div className="wrap nav-inner">
           <Wordmark />
           <nav className="nav-links">
@@ -39,7 +40,7 @@ export default function Navbar() {
             <a className="btn btn-primary btn-sm" href="#contato">
               Construir solução <span className="arrow">→</span>
             </a>
-            <button className="burger" aria-label="Menu" aria-expanded="false" onClick={handleBurgerClick}>
+            <button className="burger" aria-label="Menu" aria-expanded={menuOpen} onClick={toggleMenu}>
               <span /><span /><span />
             </button>
           </div>

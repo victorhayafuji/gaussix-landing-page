@@ -8,15 +8,16 @@ import { useEffect } from 'react';
  */
 export default function useReveal() {
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReduced) {
-      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
-      return;
-    }
+    // NOTE: animations run regardless of prefers-reduced-motion, by product
+    // decision — the CSS reduced-motion override was removed to match.
 
     // Arm the reveal system
     document.documentElement.classList.add('reveal-armed');
+    // Force a reflow so the hidden (opacity:0) state is committed as the
+    // transition's "from" value before any element receives `.in`. Without
+    // this, the browser may collapse arm + reveal into a single style flush
+    // and elements snap to their final state instead of animating.
+    void document.documentElement.offsetHeight;
 
     const reveal = (el) => el.classList.add('in');
 
@@ -41,19 +42,38 @@ export default function useReveal() {
 
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-      window.addEventListener('scroll', sweep, { passive: true });
-      window.addEventListener('resize', sweep, { passive: true });
+      // Coalesce scroll/resize sweeps to at most one layout read per frame —
+      // avoids the reflow storm of running querySelectorAll + getBoundingClientRect
+      // on every scroll event. Self-removes once everything is revealed.
+      let scheduled = false;
+      const onScrollResize = () => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => {
+          scheduled = false;
+          sweep();
+          if (!document.querySelector('.reveal:not(.in)')) {
+            window.removeEventListener('scroll', onScrollResize);
+            window.removeEventListener('resize', onScrollResize);
+          }
+        });
+      };
 
-      // Multi-pass sweep for elements already in viewport on load
-      requestAnimationFrame(sweep);
+      window.addEventListener('scroll', onScrollResize, { passive: true });
+      window.addEventListener('resize', onScrollResize, { passive: true });
+
+      // Multi-pass sweep for elements already in viewport on load.
+      // Double rAF so `.in` lands in a separate style cycle from the arming
+      // above — guarantees a painted "from" frame to transition out of.
+      requestAnimationFrame(() => requestAnimationFrame(sweep));
       const t1 = setTimeout(sweep, 100);
       const t2 = setTimeout(sweep, 400);
       const t3 = setTimeout(sweep, 800);
 
       return () => {
         if (io) io.disconnect();
-        window.removeEventListener('scroll', sweep);
-        window.removeEventListener('resize', sweep);
+        window.removeEventListener('scroll', onScrollResize);
+        window.removeEventListener('resize', onScrollResize);
         clearTimeout(t1);
         clearTimeout(t2);
         clearTimeout(t3);

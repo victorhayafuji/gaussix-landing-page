@@ -135,7 +135,7 @@ class GaussField {
     ctx.strokeStyle = grad;
     ctx.lineWidth = 2.4;
     ctx.shadowColor = rgba(mix(PURPLE, ORANGE, this.m.x), 0.9 * glow);
-    ctx.shadowBlur = 26 * glow;
+    ctx.shadowBlur = 16 * glow;
     ctx.stroke();
     ctx.restore();
 
@@ -153,7 +153,7 @@ class GaussField {
     ctx.beginPath(); ctx.moveTo(mu * W, apexY); ctx.lineTo(mu * W, baseY); ctx.stroke();
     ctx.setLineDash([]);
     const apexCol = mix(PURPLE, ORANGE, mu);
-    ctx.shadowColor = rgba(apexCol, glow); ctx.shadowBlur = 18 * glow;
+    ctx.shadowColor = rgba(apexCol, glow); ctx.shadowBlur = 12 * glow;
     this.node(mu * W, apexY, apexCol, 5);
     ctx.shadowBlur = 0;
 
@@ -166,7 +166,7 @@ class GaussField {
       const col = mix(PURPLE, ORANGE, nx);
       const g = gauss(nx, mu, sig);
       ctx.fillStyle = rgba(col, 0.5 + g * 0.5);
-      ctx.shadowColor = rgba(col, 0.9); ctx.shadowBlur = 10;
+      ctx.shadowColor = rgba(col, 0.9); ctx.shadowBlur = 6;
       ctx.beginPath(); ctx.arc(nx * W, y, 2.2 + g * 1.4, 0, 7); ctx.fill();
       ctx.shadowBlur = 0;
     }

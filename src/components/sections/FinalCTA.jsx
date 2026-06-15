@@ -24,6 +24,12 @@ export default function FinalCTA() {
       const nx = 0.5 + Math.sin(phase * 1.7) * 0.22 * settle;
       const ny = 0.5 + Math.cos(phase * 1.3) * 0.18 * settle;
       setMouse(nx, ny);
+      // Once the intro has settled to centre, stop the loop instead of
+      // spinning rAF forever (it kept running even off-screen).
+      if (settle <= 0) {
+        setMouse(0.5, 0.5);
+        return;
+      }
       rafId = requestAnimationFrame(drift);
     };
     rafId = requestAnimationFrame(drift);

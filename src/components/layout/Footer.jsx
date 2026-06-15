@@ -16,20 +16,20 @@ export default function Footer() {
             </p>
           </div>
           <div className="foot-col">
-            <h4>Soluções</h4>
+            <h3>Soluções</h3>
             {solutions.map((sol) => (
               <a key={sol.gradientId} href="#solucoes">{sol.title}</a>
             ))}
           </div>
           <div className="foot-col">
-            <h4>Empresa</h4>
+            <h3>Empresa</h3>
             <a href="#conceito">Conceito</a>
             <a href="#metodo">Método</a>
             <a href="#casos">Casos de uso</a>
             <a href="#contato">Contato</a>
           </div>
           <div className="foot-col">
-            <h4>Contato</h4>
+            <h3>Contato</h3>
             <a href="#contato">contato@gaussix.com</a>
             <a href="#contato">LinkedIn</a>
             <a href="#contato">Agendar conversa</a>
