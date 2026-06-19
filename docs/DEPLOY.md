@@ -156,6 +156,16 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# Headers de segurança (equivalente ao public/_headers da Rota A — ver docs/SECURITY.md)
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
 # Cache dos assets com hash no nome (seguros para cache longo)
 <IfModule mod_expires.c>
   ExpiresActive On
@@ -168,6 +178,10 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 > **Não precisa de rewrite de SPA.** A navegação do site usa **âncoras de hash** (`#solucoes`, `#metodo`,
 > `#casos`…), que não geram rotas de servidor — então não há o problema clássico de "404 ao dar refresh
 > numa rota interna". Um único `index.html` basta.
+
+> **Headers de segurança:** na Rota A eles vêm do arquivo [`public/_headers`](../public/_headers)
+> (Cloudflare Pages/Netlify); na Rota B, do bloco `mod_headers` acima. O racional de cada header e o
+> modelo de ameaças estão em [`SECURITY.md`](SECURITY.md).
 
 ### B.5 — Atualizações futuras
 A cada mudança no código: `npm run build` → re-suba o conteúdo de `dist/` para `public_html`

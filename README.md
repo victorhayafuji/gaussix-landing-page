@@ -45,7 +45,8 @@ src/
 Documentação de manutenção: [`CLAUDE.md`](CLAUDE.md) · regras de negócio:
 [`docs/BUSINESS_RULES.md`](docs/BUSINESS_RULES.md) · guia de conteúdo:
 [`docs/CONTENT_GUIDE.md`](docs/CONTENT_GUIDE.md) · deploy (domínio GoDaddy):
-[`docs/DEPLOY.md`](docs/DEPLOY.md).
+[`docs/DEPLOY.md`](docs/DEPLOY.md) · segurança:
+[`docs/SECURITY.md`](docs/SECURITY.md).
 
 ---
 
