@@ -27,7 +27,7 @@ Este projeto é uma **SPA estática** (React + Vite). Depois do build, ele vira 
 Consequência prática: **qualquer servidor que entregue arquivos serve**. Você não precisa de um plano
 caro nem de configuração de servidor.
 
-### Gerar os arquivos (comum às duas rotas)
+### Gerar os arquivos (a build é a mesma em qualquer rota)
 
 ```bash
 npm install      # só na primeira vez
@@ -57,26 +57,73 @@ Se abrir igual ao `npm run dev`, está pronta para publicar.
 
 ---
 
-## 3. Duas rotas (escolha uma)
+## 3. Rotas de deploy
 
-| | **Rota A — GoDaddy só domínio + host estático grátis** | **Rota B — Hospedagem cPanel da GoDaddy** |
-|---|---|---|
-| Onde moram os arquivos | Cloudflare Pages / Netlify (grátis) | Servidor cPanel da GoDaddy (pago) |
-| Como você sobe | Conecta o GitHub → **deploy automático** a cada `git push` | Sobe `dist/` **manualmente** (File Manager/FTP) |
-| HTTPS (cadeado) | Automático e grátis | Você ativa o SSL no cPanel |
-| Velocidade | CDN global (rápido no mundo todo) | Servidor único |
-| Custo de hospedagem | **R$ 0** | Plano mensal da GoDaddy |
-| O que muda na GoDaddy | Só o DNS (apontar para o host) | Nada (domínio + host já juntos) |
+| | **Netlify — domínio GoDaddy + Netlify (HOST ATUAL)** | **Cloudflare Pages (alternativa)** | **cPanel da GoDaddy (alternativa)** |
+|---|---|---|---|
+| Onde moram os arquivos | Netlify (grátis) | Cloudflare Pages (grátis) | Servidor cPanel da GoDaddy (pago) |
+| Como você sobe | Conecta o GitHub → **deploy automático** a cada `git push` | Conecta o GitHub → **deploy automático** | Sobe `dist/` **manualmente** (File Manager/FTP) |
+| HTTPS (cadeado) | Automático e grátis | Automático e grátis | Você ativa o SSL no cPanel |
+| Velocidade | CDN global | CDN global | Servidor único |
+| Custo de hospedagem | **R$ 0** | **R$ 0** | Plano mensal da GoDaddy |
+| O que muda na GoDaddy | Só o DNS (A + CNAME) | Só o DNS | Nada (domínio + host já juntos) |
 
-**Recomendação:** para um site estático como este, a **Rota A é melhor** — grátis, mais rápida, com
-HTTPS automático e re-deploy automático quando você atualiza o código. A **Rota B** só compensa se você
-já tem (ou quer manter) tudo dentro do ecossistema cPanel da GoDaddy.
+**Host atual: Netlify.** O site é publicado no Netlify, conectado ao GitHub (deploy automático a cada
+`git push`). Os headers de segurança vêm do arquivo [`public/_headers`](../public/_headers), que o Netlify
+lê automaticamente. As demais rotas ficam documentadas abaixo como alternativas.
 
 ---
 
-## Rota A — Domínio GoDaddy + host estático grátis (RECOMENDADA)
+## Netlify — Domínio GoDaddy + Netlify (HOST ATUAL)
 
-Exemplo com **Cloudflare Pages** (o Netlify é equivalente; só mudam nomes de telas).
+O Netlify serve o `dist/` via CDN, com HTTPS automático e re-deploy a cada `git push`. Os **headers de
+segurança** são aplicados a partir do [`public/_headers`](../public/_headers) (o Vite o copia para
+`dist/_headers`, e o Netlify lê esse arquivo na raiz do output).
+
+### N.1 — Código no GitHub
+```bash
+git push origin main
+```
+
+### N.2 — Site no Netlify (conectado ao Git)
+1. Em **[Netlify](https://app.netlify.com)** → **Add new site → Import an existing project** → conecte o
+   **GitHub** e selecione `victorhayafuji/gaussix-landing-page`.
+2. Configurações de build:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+   - **Node version:** 18+ (defina a variável `NODE_VERSION=18` em *Site settings → Environment* se preciso).
+3. **Deploy.** Em ~1 min o site fica no ar numa URL provisória (ex.: `gaussix.netlify.app`). Abra e teste.
+
+> A partir daqui, **todo `git push` na branch `main` re-publica o site automaticamente**.
+
+### N.3 — Apontar o domínio da GoDaddy para o Netlify
+1. No Netlify: **Site settings → Domain management → Add a domain** → adicione `gaussix.com` (o Netlify
+   também cria o `www.gaussix.com`). Anote o host `<seu-site>.netlify.app`.
+2. Na **GoDaddy**: **My Products → Domínio → DNS → Manage Zones (Gerenciar DNS)** e configure:
+
+   | Tipo | Nome | Valor |
+   |------|------|-------|
+   | **A** | `@` (raiz) | `75.2.60.5` |
+   | **CNAME** | `www` | `<seu-site>.netlify.app` (o host que o Netlify mostrou) |
+
+   - **Remova registros `AAAA`** do domínio (o Netlify usa só IPv4 nesse fluxo).
+   - Remova A/CNAME antigos conflitantes em `@`/`www` (ex.: o "Parked"/estacionamento da GoDaddy).
+
+   > **Por que A no apex?** A GoDaddy não suporta ALIAS/ANAME na raiz do domínio; por isso o apex usa o IP
+   > do balanceador do Netlify (`75.2.60.5`) e só o `www` usa CNAME.
+
+   > **Atalho (opcional):** dá para usar o **Netlify DNS** trocando os nameservers do domínio na GoDaddy
+   > para os do Netlify — ele gerencia os registros e o apex sozinho. Faça isso só se não houver outros
+   > serviços (e-mail etc.) dependendo do DNS atual da GoDaddy.
+
+### N.4 — Aguardar e confirmar
+- Propagação do DNS: de minutos a algumas horas (pode levar até 24–48h no pior caso).
+- O Netlify **emite o HTTPS (Let's Encrypt) automaticamente** assim que o DNS resolve. Quando
+  `https://gaussix.com` abrir com cadeado, está no ar.
+
+---
+
+## Cloudflare Pages — alternativa
 
 ### A.1 — Subir o código para o GitHub
 O repositório já existe: `victorhayafuji/gaussix-landing-page`. Garanta que está atualizado:
@@ -86,7 +133,7 @@ git push origin main
 ```
 
 ### A.2 — Conectar o repositório ao host
-1. Crie uma conta em **[Cloudflare Pages](https://pages.cloudflare.com)** (ou [Netlify](https://netlify.com)).
+1. Crie uma conta em **[Cloudflare Pages](https://pages.cloudflare.com)**.
 2. **Create a project → Connect to Git** → autorize o GitHub → selecione `gaussix-landing-page`.
 3. Configure a build:
    - **Framework preset:** Vite (ou "None")
@@ -95,23 +142,14 @@ git push origin main
    - **Node version:** 18 ou superior (variável `NODE_VERSION=18` se precisar)
 4. **Deploy.** Em ~1 min o site fica no ar numa URL provisória (ex.: `gaussix.pages.dev`). Abra e teste.
 
-> A partir daqui, **todo `git push` na branch `main` re-publica o site automaticamente**. Para atualizar
-> conteúdo, basta commitar e dar push — não precisa subir arquivo nenhum à mão.
+> O Cloudflare Pages também lê o [`public/_headers`](../public/_headers) para os headers de segurança.
 
 ### A.3 — Apontar o domínio da GoDaddy para o host
 1. No painel do host: **Custom domains → Set up a domain** → digite `gaussix.com`. Ele vai te mostrar os
    registros DNS necessários.
 2. No painel da **GoDaddy**: **My Products → Domínio → DNS → Manage Zones (Gerenciar DNS)**.
-3. Crie os registros que o host indicou. Tipicamente:
-   - **`www`** → tipo **CNAME** apontando para o host (ex.: `gaussix.pages.dev`).
-   - **Raiz (`@` / `gaussix.com`)** → o host informa um **CNAME achatado** (Cloudflare) ou um **registro A**
-     com um IP (Netlify). Use exatamente o que a tela do host mostrar.
-   - Apague registros A/CNAME antigos de `@` e `www` que conflitem (ex.: o "Parked"/estacionamento da
-     GoDaddy).
-
-> **Atalho (opcional):** o Cloudflare oferece **trocar os nameservers** do domínio para os dele. Fica mais
-> simples (ele gerencia tudo), mas o DNS passa a ser editado no Cloudflare, não na GoDaddy. Faça isso só
-> se não tiver outros serviços (e-mail etc.) dependendo do DNS atual da GoDaddy.
+3. Crie os registros que o host indicou (Cloudflare costuma usar CNAME achatado no apex). Apague registros
+   A/CNAME antigos de `@` e `www` que conflitem (ex.: o "Parked"/estacionamento da GoDaddy).
 
 ### A.4 — Aguardar e confirmar
 - A propagação do DNS leva de **alguns minutos a algumas horas**.
@@ -120,7 +158,7 @@ git push origin main
 
 ---
 
-## Rota B — Hospedagem cPanel da GoDaddy
+## cPanel da GoDaddy — alternativa
 
 Use esta rota se já tem (ou quer) um plano **Web Hosting** da GoDaddy.
 
@@ -156,7 +194,7 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Headers de segurança (equivalente ao public/_headers da Rota A — ver docs/SECURITY.md)
+# Headers de segurança (equivalente ao public/_headers usado no Netlify — ver docs/SECURITY.md)
 <IfModule mod_headers.c>
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
   Header always set X-Frame-Options "DENY"
@@ -179,13 +217,13 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 > `#casos`…), que não geram rotas de servidor — então não há o problema clássico de "404 ao dar refresh
 > numa rota interna". Um único `index.html` basta.
 
-> **Headers de segurança:** na Rota A eles vêm do arquivo [`public/_headers`](../public/_headers)
-> (Cloudflare Pages/Netlify); na Rota B, do bloco `mod_headers` acima. O racional de cada header e o
-> modelo de ameaças estão em [`SECURITY.md`](SECURITY.md).
+> **Headers de segurança:** no Netlify (e no Cloudflare Pages) eles vêm do arquivo
+> [`public/_headers`](../public/_headers); no cPanel, do bloco `mod_headers` acima. O racional de cada
+> header e o modelo de ameaças estão em [`SECURITY.md`](SECURITY.md).
 
 ### B.5 — Atualizações futuras
 A cada mudança no código: `npm run build` → re-suba o conteúdo de `dist/` para `public_html`
-(substituindo os arquivos). É **manual** a cada release (diferente da Rota A, que é automática).
+(substituindo os arquivos). É **manual** a cada release (diferente do Netlify, que é automático).
 
 ---
 

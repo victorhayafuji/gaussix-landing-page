@@ -40,9 +40,10 @@ Defesa dupla, garantindo cobertura em navegadores antigos e modernos.
 
 ### DDoS — **responsabilidade da camada de CDN/host**
 Não se mitiga DDoS no código de um site estático; mitiga-se em quem serve os bytes.
-- **Rota A (Cloudflare Pages / Netlify):** proteção anti-DDoS e CDN global **inclusas por padrão** —
-  a melhor opção também por este motivo.
-- **Rota B (cPanel GoDaddy):** servidor único, proteção limitada. **Recomendado** colocar o **Cloudflare
+- **Netlify (host atual):** o site é servido por CDN com TLS na borda e proteção anti-DDoS inclusa — o
+  tráfego não bate num servidor único, o que já absorve picos e ataques volumétricos comuns.
+- **Cloudflare Pages (alternativa):** proteção anti-DDoS e CDN global **inclusas por padrão**.
+- **cPanel da GoDaddy (alternativa):** servidor único, proteção limitada. **Recomendado** colocar o **Cloudflare
   (plano grátis) como proxy** na frente do domínio (nuvem laranja), ganhando cache, CDN e mitigação de
   DDoS sem trocar a hospedagem.
 
@@ -66,13 +67,14 @@ intacto, mas o tráfego é desviado). Checklist na conta GoDaddy:
 
 ## 3. Headers de segurança (já configurados no repositório)
 
-Os headers são aplicados conforme a rota de deploy (ver [`DEPLOY.md`](DEPLOY.md)):
+Os headers são aplicados conforme a rota de deploy (ver [`DEPLOY.md`](DEPLOY.md)). Cada rota entrega o
+**mesmo conjunto** de headers — só muda o mecanismo:
 
-- **Rota A** — arquivo [`public/_headers`](../public/_headers) (lido por Cloudflare Pages / Netlify; o
-  Vite o copia para `dist/_headers` no build).
-- **Rota B** — bloco `<IfModule mod_headers.c>` no `.htaccess` (seção B.4 de `DEPLOY.md`).
+- **Netlify (host atual)** — arquivo [`public/_headers`](../public/_headers), lido pelo Netlify na raiz do
+  output (o Vite o copia para `dist/_headers` no build). O Cloudflare Pages lê o mesmo arquivo.
+- **cPanel (alternativa)** — bloco `<IfModule mod_headers.c>` no `.htaccess` (seção B.4 de `DEPLOY.md`).
 
-Headers aplicados nas duas:
+Headers aplicados:
 
 | Header | Função |
 |---|---|
@@ -122,5 +124,5 @@ a CSP precisa liberar esse domínio explicitamente, senão o recurso é bloquead
 | Links `target="_blank"` inseguros | Nenhum |
 | Headers de segurança | **Configurados** (`_headers` + `.htaccess`) |
 | Clickjacking | Mitigado (`X-Frame-Options` + CSP) |
-| DDoS | Camada de CDN/host (Rota A já protege; Rota B → Cloudflare na frente) |
+| DDoS | Camada de CDN/host (Netlify já protege; cPanel → Cloudflare na frente) |
 | Hijack de domínio/DNS | Checklist GoDaddy (2FA, Domain Lock, DNSSEC) |
