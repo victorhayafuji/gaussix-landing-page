@@ -1,0 +1,4 @@
+# URLs limpas das páginas legais (Netlify) — o dashboard do FlowIA linka sem barra final.
+# Rewrite 200 (não 301) para servir o conteúdo diretamente em /privacidade e /termos.
+/privacidade   /privacidade/index.html   200
+/termos        /termos/index.html        200

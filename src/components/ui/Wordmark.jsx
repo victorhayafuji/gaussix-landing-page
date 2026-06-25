@@ -1,6 +1,6 @@
-export default function Wordmark() {
+export default function Wordmark({ href = '#top' }) {
   return (
-    <a className="wordmark" href="#top" aria-label="GAUSSIX">
+    <a className="wordmark" href={href} aria-label="GAUSSIX">
       <svg className="mark" viewBox="0 0 100 72" fill="none" aria-hidden="true">
         <defs>
           <linearGradient id="wmg" x1="0" y1="0" x2="100" y2="0" gradientUnits="userSpaceOnUse">

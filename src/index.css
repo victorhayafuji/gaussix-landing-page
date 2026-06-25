@@ -502,7 +502,7 @@ body.menu-open .mobile-menu { transform: none; opacity: 1; pointer-events: auto;
 
 /* ============================================================ Footer */
 .footer { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 64px 0 40px; margin-top: 0; }
-.foot-grid { display:grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
+.foot-grid { display:grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 40px; }
 .foot-col h3 { font-family: var(--f-mono); font-size: 11px; font-weight: 700; line-height: 1.6; letter-spacing:.2em; text-transform:uppercase; color: var(--muted); margin-bottom: 18px; }
 .foot-col a { display:block; color: var(--ink-dim); font-size: 14.5px; padding: 6px 0; transition: color var(--t-fast); }
 .foot-col a:hover { color: var(--orange); }
@@ -610,6 +610,58 @@ html.reveal-armed .card.reveal, html.reveal-armed .sol.reveal, html.reveal-armed
 
 /* the closing CTA sits just above the footer — trim its bottom void */
 #contato.section-pad { padding-bottom: 80px; }
+
+/* ============================================================ Final CTA mail line */
+.final-mail { font-family: var(--f-mono); font-size: 13px; color: var(--muted); margin-top: 22px; }
+.final-mail a { color: var(--ink-dim); border-bottom: 1px solid var(--line-strong); transition: color var(--t-fast), border-color var(--t-fast); }
+.final-mail a:hover { color: var(--orange); border-color: rgba(248,102,6,.5); }
+
+/* ============================================================ Legal pages (Privacidade / Termos) */
+.legal-nav {
+  position: relative; z-index: 60; border-bottom: 1px solid var(--line);
+  background: rgba(6,5,10,.72); backdrop-filter: blur(10px) saturate(1.2);
+}
+.legal-nav-inner { display:flex; align-items:center; justify-content:space-between; height: 76px; }
+.legal-back {
+  font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .04em; color: var(--ink-dim);
+  transition: color var(--t-fast);
+}
+.legal-back:hover { color: var(--orange); }
+
+.legal-page { position: relative; z-index: 1; }
+.legal-wrap { max-width: 860px; margin: 0 auto; padding: 80px 28px 110px; }
+
+.legal .eyebrow { margin-bottom: 18px; }
+.legal h1 { font-family: var(--f-display); font-size: clamp(32px, 4vw, 50px); letter-spacing: -0.03em; margin-bottom: 12px; }
+.legal h2 {
+  font-family: var(--f-display); font-size: clamp(20px, 2.4vw, 27px); letter-spacing: -0.02em;
+  margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--line);
+}
+.legal h3 { font-family: var(--f-display); font-size: 18px; margin-top: 28px; }
+.legal p { color: var(--ink-dim); margin-top: 16px; line-height: 1.72; }
+.legal ul { margin: 16px 0 0; padding-left: 22px; }
+.legal li { color: var(--ink-dim); margin-top: 9px; line-height: 1.65; }
+.legal strong { color: var(--ink); font-weight: 600; }
+.legal a { color: var(--orange); border-bottom: 1px solid rgba(248,102,6,.35); transition: border-color var(--t-fast); }
+.legal a:hover { border-color: var(--orange); }
+.legal .legal-updated { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-top: 0; margin-bottom: 8px; }
+
+.legal table {
+  width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14.5px;
+  border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden;
+}
+.legal th, .legal td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.legal th { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); background: rgba(255,255,255,.025); }
+.legal td { color: var(--muted); }
+.legal tr:last-child td { border-bottom: none; }
+
+@media (max-width: 680px) {
+  .legal-wrap { padding: 56px 20px 80px; }
+  .legal table, .legal thead, .legal tbody, .legal th, .legal td, .legal tr { display: block; }
+  .legal thead { display: none; }
+  .legal td { border-bottom: none; padding: 4px 14px; }
+  .legal tr { border-bottom: 1px solid var(--line); padding: 8px 0; }
+}
 
 /* ============================================================ Responsive */
 @media (max-width: 980px) {
