@@ -56,12 +56,18 @@ export default function FinalCTA() {
           </h2>
           <p className="lead">Mapeamos seus processos e desenvolvemos as automações, sistemas e dados que seu negócio precisa para crescer.</p>
           <div className="hero-cta">
-            <a className="btn btn-primary" href="#contato">
+            <a
+              className="btn btn-primary"
+              href="mailto:contato@gaussix.com?subject=Quero%20construir%20minha%20solu%C3%A7%C3%A3o&body=Ol%C3%A1%2C%20Gaussix.%20Quero%20conversar%20sobre%20um%20projeto%3A%0A%0A"
+            >
               Quero construir minha solução <span className="arrow">→</span>
             </a>
             <a className="btn btn-ghost" href="#conceito">Conhecer o FlowIA</a>
             <a className="btn btn-ghost" href="#solucoes">Solicitar uma landing page</a>
           </div>
+          <p className="final-mail">
+            ou escreva direto para <a href="mailto:contato@gaussix.com">contato@gaussix.com</a>
+          </p>
           {!isMobile && (
             <canvas id="final-canvas" ref={canvasRef} aria-hidden="true" />
           )}
