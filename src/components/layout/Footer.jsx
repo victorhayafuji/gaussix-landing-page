@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="foot-bottom">
-          <p>Copyright © {year} gaussix.com – Todos os direitos reservados</p>
+          <p>Copyright © {year} gaussix.com – Todos os direitos reservados · by Alievi</p>
           <p>RUÍDO → CLAREZA → DIREÇÃO</p>
         </div>
       </div>
