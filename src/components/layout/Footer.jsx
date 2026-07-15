@@ -1,5 +1,6 @@
 import Wordmark from '../ui/Wordmark';
 import { solutions } from '../../data/content';
+import alieviWordmark from '../../assets/alievi-wordmark.png';
 
 const CONTACT_EMAIL = 'contato@gaussix.com';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/gaussix';
@@ -44,7 +45,12 @@ export default function Footer() {
           </div>
         </div>
         <div className="foot-bottom">
-          <p>Copyright © {year} gaussix.com – Todos os direitos reservados · by Alievi</p>
+          <p>
+            Copyright © {year} gaussix.com – Todos os direitos reservados ·{' '}
+            <span className="foot-by">
+              by <img src={alieviWordmark} alt="Alievi" className="foot-by-logo" width="61" height="13" />
+            </span>
+          </p>
           <p>RUÍDO → CLAREZA → DIREÇÃO</p>
         </div>
       </div>
