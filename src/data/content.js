@@ -1,69 +1,58 @@
+// Fonte única do conteúdo estruturado da home (spec: docs/specs/2026-11-23-redesign-anti-slop.md).
+// `title` é o rótulo canônico do serviço (também usado nos links do rodapé);
+// `headline` abre o bloco pelo benefício; `cta` (opcional) usa só CTAs permitidos.
+
 export const solutions = [
   {
-    tag: 'Dados · BI',
-    title: 'Business Intelligence',
-    description: 'Dashboards, KPIs, relatórios e análises estruturadas para total clareza operacional.',
-    gradientId: 's1',
-    delay: '1',
+    id: 'bi',
+    title: 'Dashboards & BI',
+    headline: 'Veja a operação inteira num só painel.',
+    description: 'Vendas, marketing e finanças centralizados em indicadores que a diretoria usa de verdade.',
+    cta: 'Criar meu dashboard',
+    featured: true,
   },
   {
-    tag: 'Automação · Ops',
-    title: 'Data Automation',
-    description: 'Rotinas, integrações e fluxos de trabalho automatizados que eliminam o esforço manual.',
-    gradientId: 's2',
-    delay: '2',
+    id: 'automacao',
+    title: 'Automação',
+    headline: 'Chega de copiar dado de planilha em planilha.',
+    description: 'Rotinas e integrações entre os sistemas que você já usa, rodando sem intervenção manual.',
+    cta: 'Automatizar minha operação',
   },
   {
-    tag: 'Agentes · IA',
-    title: 'AI Agents',
-    description: 'Assistentes inteligentes sob medida para automatizar atendimento, triagem e suporte operacional.',
-    gradientId: 's3',
-    delay: '3',
+    id: 'agentes',
+    title: 'Agentes de IA',
+    headline: 'Atendimento no WhatsApp, a qualquer hora.',
+    description: 'Agentes que respondem, qualificam e passam para a sua equipe quando o caso pede uma pessoa.',
   },
   {
-    tag: 'Design · Vendas',
-    title: 'Landing Pages',
-    description: 'Páginas de vendas premium, rápidas e otimizadas para converter campanhas em faturamento.',
-    gradientId: 's4',
-    delay: '1',
+    id: 'landing-pages',
+    title: 'Landing pages',
+    headline: 'Páginas feitas para converter.',
+    description: 'Rápidas, medidas e ligadas às suas campanhas: um ativo de vendas, não só uma página bonita.',
+    cta: 'Solicitar uma landing page',
   },
   {
-    tag: 'Sistemas · Web',
-    title: 'Web Systems',
-    description: 'Sistemas sob medida, portais, dashboards corporativos e ferramentas de gestão interna.',
-    gradientId: 's5',
-    delay: '2',
+    id: 'sistemas',
+    title: 'Sistemas web',
+    headline: 'A ferramenta que sua equipe precisava.',
+    description: 'Portais, sistemas internos e painéis de gestão sob medida, no lugar das planilhas.',
   },
-  {
-    tag: 'SaaS · FlowIA',
-    title: 'SaaS Products',
-    description: 'Desenvolvimento, hospedagem e operação de produtos digitais próprios, como o FlowIA.',
-    gradientId: 's6',
-    delay: '3',
-  },
-];
-
-export const useCases = [
-  { num: '01', title: 'Visualizar indicadores estratégicos', desc: 'Centralize dados de vendas, marketing e finanças em dashboards executivos de alta performance.', delay: '1' },
-  { num: '02', title: 'Automatizar atendimento e suporte', desc: 'Implemente agentes de IA integrados ao WhatsApp para qualificar leads e resolver atendimentos em escala.', delay: '2' },
-  { num: '03', title: 'Acelerar campanhas com landing pages', desc: 'Páginas de vendas premium, rápidas e otimizadas para converter tráfego em clientes recorrentes.', delay: '1' },
-  { num: '04', title: 'Substituir processos manuais por sistemas', desc: 'Transforme planilhas confusas em ferramentas internas e sistemas web estruturados e fáceis de usar.', delay: '2' },
-  { num: '05', title: 'Criar produtos digitais com IA', desc: 'Desenvolva novas soluções SaaS ou integre inteligência conversacional ao seu produto atual.', delay: '1' },
-  { num: '06', title: 'Mapear oportunidades de crescimento', desc: 'Saiba onde focar investimentos com análises de dados precisas e previsões estatísticas robustas.', delay: '2', editable: true },
 ];
 
 export const steps = [
-  { num: '01', title: 'Diagnóstico', desc: 'Mapeamos processos, ferramentas e infraestrutura para encontrar gargalos e oportunidades.' },
-  { num: '02', title: 'Arquitetura', desc: 'Desenhamos a solução sob medida, integrando dados, fluxos de IA e interface de usuário.' },
-  { num: '03', title: 'Desenvolvimento & Validação', desc: 'Construímos a solução (dashboards, agentes ou sistemas) e validamos cada fluxo de entrega.' },
-  { num: '04', title: 'Otimização Contínua', desc: 'Monitoramos a operação, calibramos modelos de IA e ajustamos a solução para garantir escala.' },
+  { num: '01', title: 'Diagnóstico', desc: 'Mapeamos processos, ferramentas e dados para achar onde está o ruído.', deliverable: 'Mapa de processos e prioridades' },
+  { num: '02', title: 'Arquitetura', desc: 'Desenhamos a solução: dados, automações, IA e interface.', deliverable: 'Desenho da solução e plano de entrega' },
+  { num: '03', title: 'Construção', desc: 'Desenvolvemos e validamos cada fluxo com a sua equipe.', deliverable: 'Solução em uso, validada' },
+  { num: '04', title: 'Evolução', desc: 'Acompanhamos o uso real e ajustamos o que for preciso.', deliverable: 'Ajustes contínuos com base no uso' },
 ];
 
-export const telemetryItems = [
-  'Business Intelligence',
-  'Data Automation',
-  'AI Agents & Automações',
-  'Landing Pages Premium',
-  'Sistemas Web Customizados',
-  'SaaS & Produtos Digitais',
+export const flowiaFeatures = [
+  { title: 'WhatsApp', desc: 'O canal que o seu cliente já usa.' },
+  { title: 'IA conversacional', desc: 'Responde, agenda e encaminha.' },
+  { title: 'Painéis analíticos', desc: 'Acompanhe atendimentos e agendamentos.' },
 ];
+
+// Contato: e-mail único e links mailto com assunto (sem PII em query além do assunto).
+export const CONTACT_EMAIL = 'contato@gaussix.com';
+export const mailto = (subject, body = '') =>
+  `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}${body ? `&body=${encodeURIComponent(body)}` : ''}`;

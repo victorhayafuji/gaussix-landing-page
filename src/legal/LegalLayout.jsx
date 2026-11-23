@@ -1,5 +1,4 @@
 import BrandBar from '../components/layout/BrandBar';
-import BackgroundField from '../components/layout/BackgroundField';
 import Footer from '../components/layout/Footer';
 import Wordmark from '../components/ui/Wordmark';
 
@@ -12,7 +11,6 @@ export default function LegalLayout({ title, children }) {
   return (
     <>
       <BrandBar />
-      <BackgroundField />
 
       <header className="legal-nav">
         <div className="wrap legal-nav-inner">

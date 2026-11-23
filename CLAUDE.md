@@ -13,9 +13,9 @@ A GAUSSIX **não é** apenas "AI Data Analysis", BI puro, consultoria genérica,
 O **FlowIA** é o produto SaaS proprietário da GAUSSIX (ver Seção 7 e [`docs/BUSINESS_RULES.md`](docs/BUSINESS_RULES.md)) — prova de capacidade técnica, nunca uma marca separada.
 
 A experiência visual é:
-- **técnica**, porém elegante;
-- **escura**, com grade, vidro, brilho e profundidade;
-- **orientada a dados**, com curvas gaussianas, barras, telemetria e interação;
+- **técnica**, porém elegante e **vendedora** (pegada de página de produto: título curto, benefício primeiro, CTA claro);
+- **escura e limpa**: fundo liso, blocos arredondados, muito respiro — sem brilhos, grades ou efeitos decorativos;
+- **com a curva gaussiana como assinatura**: viva no hero, reagindo ao mouse;
 - **leve e responsiva**, principalmente em mobile;
 - **confiável para venda B2B**, sem parecer template genérico de SaaS.
 
@@ -33,14 +33,16 @@ O monólito original (página de arquivo único, preservado no histórico do Git
 ├── vite.config.js                # Configuração do Vite + React Plugin + Tailwind v4 Plugin
 ├── eslint.config.js              # ESLint flat config (JS + React Hooks + React Refresh)
 ├── .gitignore                    # node_modules, dist, uploads, env, etc.
-├── docs/                         # BUSINESS_RULES.md, CONTENT_GUIDE.md
+├── docs/                         # BUSINESS_RULES.md, CONTENT_GUIDE.md, specs/ (decisões de redesign)
 ├── .claude/                      # settings.json (hooks) + commands/ + skills/ + hooks/
+├── public/_headers               # Headers do Netlify (CSP: fontes só de 'self')
 ├── src/
 │   ├── main.jsx                  # Ponto de entrada do React
+│   ├── fonts.js                  # Fontes self-hosted (@fontsource), importado por todas as entradas
 │   ├── App.jsx                   # Montagem da página principal (ordem das seções)
 │   ├── index.css                 # Import do Tailwind v4 + design tokens + custom CSS
 │   ├── data/
-│   │   └── content.js            # Conteúdo estático unificado (Soluções, Telemetria, Casos de Uso, etc.)
+│   │   └── content.js            # Conteúdo estruturado (solutions, steps, flowiaFeatures, mailto)
 │   ├── hooks/
 │   │   ├── useGaussField.js      # Gerenciamento de ciclo de vida e render do GaussField no Canvas
 │   │   └── useReveal.js          # IntersectionObserver + Sweep para revelação ao rolar a página
@@ -48,19 +50,16 @@ O monólito original (página de arquivo único, preservado no histórico do Git
 │   │   └── GaussField.js         # Motor visual matemático GaussField (Vanilla JS puro com destroy())
 │   └── components/
 │       ├── layout/
-│       │   ├── BackgroundField.jsx  # Gradientes fixos de fundo e malha de grade técnica
 │       │   ├── BrandBar.jsx         # Barra tricolor de marca fixa no topo (laranja/roxo)
 │       │   ├── Footer.jsx           # Rodapé da página com Wordmark
 │       │   └── Navbar.jsx           # Barra de navegação com estado .scrolled e menu mobile
 │       ├── sections/
-│       │   ├── Hero.jsx             # Seção de cabeçalho com Canvas GaussField interativo e mouse-tracking
-│       │   ├── TelemetryTicker.jsx  # Marquee infinito de telemetria técnica
-│       │   ├── Credibility.jsx      # Seção 01 - Posicionamento (3 cards analíticos)
-│       │   ├── Solutions.jsx        # Seção 02 - Soluções (6 cards com visualizações específicas)
-│       │   ├── Methodology.jsx      # Seção 03 - Método (Linha animada SVG e etapas)
-│       │   ├── BrandConcept.jsx     # Seção 04 - Produto em destaque (FlowIA, glifo X e legenda)
-│       │   ├── UseCases.jsx         # Seção 05 - Casos de uso
-│       │   └── FinalCTA.jsx         # Seção 06 - Chamada final / contato (skips canvas no mobile)
+│       │   ├── Hero.jsx             # Título centralizado + curva GaussField (versão "Sutil", contida no .wrap) e eixo
+│       │   ├── Manifesto.jsx        # A metáfora em um parágrafo (problema em cinza, resposta em branco)
+│       │   ├── Solutions.jsx        # "O que fazemos": bento de 5 serviços, benefício primeiro
+│       │   ├── Methodology.jsx      # 4 etapas numeradas, cada uma com sua entrega
+│       │   ├── FlowIA.jsx           # Produto SaaS da Gaussix (prova de capacidade)
+│       │   └── FinalCTA.jsx         # Contato (mailto com assunto), sem canvas
 │       └── ui/
 │           └── Wordmark.jsx          # Logotipo GAUSSIX (marca + subtítulo)
 ```
@@ -82,11 +81,21 @@ O monólito original (página de arquivo único, preservado no histórico do Git
 --grad: linear-gradient(100deg, var(--purple) 0%, #B23FAE 48%, var(--orange) 100%);
 ```
 
-### Tipografia
-Carregadas no `index.html`:
-- **Michroma** (utilizado no Wordmark e em legendas selecionadas)
-- **Space Grotesk** (font-family padrão do corpo e de displays)
-- **JetBrains Mono** (usada para códigos de telemetria, dados e detalhes técnicos)
+### Tipografia (mesmo conjunto do Beast X V2)
+Self-hosted via `@fontsource` em `src/fonts.js` — **nenhuma requisição ao Google Fonts** (a CSP em
+`public/_headers` só permite fontes de `'self'`):
+- **Inter Tight** — títulos (`--f-display`, 600, tracking −0,03em)
+- **Inter** — texto (`--f-body`)
+- **JetBrains Mono** — só rótulos pequenos (eixo da curva, rótulos dos blocos)
+- **Michroma** — **só** o wordmark
+
+### Regras visuais anti "AI slop" (spec `docs/specs/2026-11-23-redesign-anti-slop.md`)
+- **Nunca texto em gradiente.** O gradiente roxo→laranja é só gráfico: curva, wordmark, barra do topo, fio do método.
+- **Cor por função:** laranja = ação (pílula, links `›`, eyebrows); roxo = tom do bloco em destaque e da curva.
+- **Fundo liso** (`--bg`): sem manchas de brilho, grade de fundo ou pílulas pulsantes.
+- **Cada seção com layout próprio** (nada de "eyebrow numerado → título → grade de cards" repetido).
+- **Benefício primeiro** nos serviços; o nome do serviço é rótulo.
+- **Contraste AA medido:** `--muted` ≥ 4,6:1 em todas as superfícies; `--dim-large` (3,7:1) só em texto grande; a pílula laranja leva texto escuro (branco daria 3,1:1).
 
 ---
 
@@ -117,8 +126,9 @@ npm run lint
 ## 5. Bugs resolvidos e otimizações implementadas
 
 ### 5.1 Otimização de CPU/Performance do Canvas
-- **Pausa automática:** Os canvases `Hero.jsx` e `FinalCTA.jsx` usam o hook `useGaussField.js` para monitorar a viewport com um `IntersectionObserver`. Quando o canvas sai da tela, a animação é imediatamente pausada (`cancelAnimationFrame`), reduzindo o consumo de CPU e bateria para zero.
-- **Mobile bypass:** O Canvas do rodapé em `FinalCTA.jsx` não é instanciado em telas menores que `680px` (mobile). O hook `useGaussField` recebe um parâmetro `enabled` dinâmico para evitar loops desnecessários e reduzir consumo no mobile.
+- **Pausa automática:** O canvas do `Hero.jsx` usa o hook `useGaussField.js` para monitorar a viewport com um `IntersectionObserver`. Quando o canvas sai da tela, a animação é imediatamente pausada (`cancelAnimationFrame`), reduzindo o consumo de CPU e bateria para zero.
+- **Um canvas só (redesign 2026-11):** o segundo canvas (no `FinalCTA.jsx`) foi removido. O hero usa a versão "Sutil" (`bars: 56`, `extras: 2`, `grid: false`), contida na largura do `.wrap` com as pontas dissolvidas por `mask-image`, só por opções — `GaussField.js` não foi alterado.
+- **Reduced-motion no canvas:** sem partículas (o movimento contínuo); a curva só responde ao mouse/toque. Não use `pause()` para isso: o `IntersectionObserver` do hook chama `resume()` quando o canvas volta à tela.
 
 ### 5.2 Estabilidade do Reveal-on-scroll (Correção de Especificidade CSS)
 - **O problema:** A animação de scroll usa `.reveal` e a classe `.in` para tornar os elementos visíveis ao rolar. No entanto, o seletor `html.reveal-armed .reveal` (usado para ocultar os elementos antes da animação com JS ativo) possui especificidade maior do que `.reveal.in`. Como resultado, os elementos permaneciam com `opacity: 0` mesmo após receberem a classe `.in`.
@@ -134,12 +144,19 @@ npm run lint
 - **Código morto/legado removido:** prop `showSubDashes` no Wordmark, `EngineConsole.jsx` (órfão), `assets/` e `monolith.html`.
 - **Tooling:** ESLint (flat config + script `lint`), `.gitignore` e repositório Git inicializados.
 
+### 5.5 Redesign anti "AI slop" (2026-11)
+Spec completo, com briefing, decisões e copy: [`docs/specs/2026-11-23-redesign-anti-slop.md`](docs/specs/2026-11-23-redesign-anti-slop.md).
+- **Estrutura:** de 8 blocos (com o mesmo conteúdo repetido 4×) para Hero → Manifesto → O que fazemos → Método → FlowIA → Contato.
+- **Removidos:** `TelemetryTicker`, `Credibility`, `UseCases`, `BrandConcept`, `BackgroundField`, os mini-SVGs decorativos, as etiquetas "Editável" (vazavam em produção) e o caso de uso com "previsões estatísticas robustas" (promessa não comprovável).
+- **Fontes self-hosted** e CSP sem domínios do Google.
+- **Armadilha:** o Edit/Write de ferramentas pode converter o escape `\u00A0` em NBSP literal, e o ESLint reprova (`no-irregular-whitespace`). Em JSX use a entidade `&nbsp;`.
+
 ---
 
 ## 6. Padrões de código para edição
 
-- **Textos e Cópia:** O conteúdo estruturado (soluções, casos, etapas, telemetria) fica em `src/data/content.js`; parte da copy (eyebrows, títulos de seção, leads, CTAs) ainda é inline nas seções. Veja a Seção 8 para o que editar onde. Prefira `content.js` sempre que aplicável.
-- **Identidade Visual:** Respeite rigorosamente a paleta de cores roxo/laranja e a metáfora da curva gaussiana. Não altere o visual do hero canvas ou do painel de telemetria sem o aval do usuário.
+- **Textos e Cópia:** O conteúdo estruturado (serviços, etapas, capacidades do FlowIA, e-mail de contato) fica em `src/data/content.js`; parte da copy (eyebrows, títulos de seção, leads) ainda é inline nas seções. Veja a Seção 8 para o que editar onde. Prefira `content.js` sempre que aplicável.
+- **Identidade Visual:** Respeite rigorosamente a paleta de cores roxo/laranja, a metáfora da curva gaussiana e as regras anti "AI slop" da Seção 3. Não altere o visual do hero canvas sem o aval do usuário.
 - **Acessibilidade:** Garanta tags HTML semânticas (`<section>`, `<article>`, `<header>`, `<footer>`) e tags descritivas em links e SVGs.
 
 ---
@@ -168,9 +185,9 @@ Estas regras são vinculantes para qualquer alteração de copy ou posicionament
 
 ## 8. Como editar conteúdo sem mexer no visual
 
-- **Fonte única de conteúdo:** `src/data/content.js` exporta `solutions`, `useCases`, `steps`, `telemetryItems`. As seções `Solutions.jsx`, `UseCases.jsx`, `Methodology.jsx`, `TelemetryTicker.jsx` e os links de soluções do `Footer.jsx` **leem desses arrays** — editar o array atualiza todos os pontos.
-- **SVGs das soluções** são bespoke por card e ficam inline em `Solutions.jsx` (mapa `svgByGradient`, chaveado por `gradientId`). Só o texto é data-driven.
-- **Copy ainda inline** (eyebrows, títulos de seção, leads, CTAs, copy do FlowIA, navbar, footer institucional): editar diretamente no JSX da seção, **sem tocar em `className`, estrutura ou estilos**.
+- **Fonte única de conteúdo:** `src/data/content.js` exporta `solutions`, `steps`, `flowiaFeatures`, `CONTACT_EMAIL` e `mailto()`. `Solutions.jsx`, `Methodology.jsx`, `FlowIA.jsx`, `FinalCTA.jsx` e o `Footer.jsx` **leem daí** — editar o array atualiza todos os pontos.
+- **Serviços (`solutions`):** `title` é o rótulo canônico (também nos links do rodapé); `headline` abre o bloco pelo benefício; `cta` é opcional e só aceita CTAs permitidos (Seção 10); `featured` marca o bloco largo do bento.
+- **Copy ainda inline** (eyebrows, títulos de seção, leads, manifesto, navbar, footer institucional): editar diretamente no JSX da seção, **sem tocar em `className`, estrutura ou estilos**.
 - Para mudar copy: altere apenas strings. **Nunca** altere classes visuais, paleta ou estrutura de tags por preferência estética.
 - Guia completo de copy/tom/CTA: [`docs/CONTENT_GUIDE.md`](docs/CONTENT_GUIDE.md).
 
@@ -183,10 +200,11 @@ Alterar estes itens exige aval explícito do usuário (impacto visual ou de marc
 - `src/lib/GaussField.js` — motor visual do canvas (curva/barras/partículas).
 - `src/hooks/useGaussField.js` — ciclo de vida e pausa do canvas.
 - `src/hooks/useReveal.js` — sistema de reveal-on-scroll (cuidado com StrictMode).
-- Canvas do **Hero** (`Hero.jsx`) e **FinalCTA** (`FinalCTA.jsx`).
+- Canvas do **Hero** (`Hero.jsx`).
 - Paleta e tokens de design em `src/index.css` (variáveis `--purple`, `--orange`, `--grad`, etc.).
 - Animações reveal e seletores `.reveal` / `html.reveal-armed` em `src/index.css`.
-- `index.html` — fontes e meta tags.
+- `index.html` — meta tags; `src/fonts.js` — fontes.
+- `public/_headers` — CSP e headers de segurança.
 
 ---
 

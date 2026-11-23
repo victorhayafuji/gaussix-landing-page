@@ -3,9 +3,9 @@
 Landing page da **GAUSSIX**, empresa de **tecnologia aplicada** que atua com Dados, IA, automações,
 landing pages, sistemas digitais e produtos SaaS próprios (como o **FlowIA**).
 
-A experiência usa a **distribuição gaussiana** como metáfora central — *ruído → clareza → decisão* —
-com um visual técnico, escuro e premium: canvas interativo, curvas gaussianas, telemetria e animações
-de revelação ao rolar.
+A experiência usa a **distribuição gaussiana** como metáfora central — *ruído → clareza → direção* —
+com um visual escuro, limpo e vendedor: tipografia Inter Tight / Inter, a curva gaussiana viva no hero
+(reage ao mouse) e animações discretas de revelação ao rolar.
 
 > Stack: **React 19 + Vite 6 + Tailwind CSS v4**.
 
@@ -31,14 +31,14 @@ npm run lint     # ESLint
 src/
 ├── App.jsx                 # Montagem da página (ordem das seções)
 ├── main.jsx                # Entry point do React
+├── fonts.js                # Fontes self-hosted (@fontsource)
 ├── index.css              # Tailwind v4 + design tokens + CSS de componentes
-├── data/content.js        # Conteúdo estático (fonte única: soluções, casos, etapas, telemetria)
+├── data/content.js        # Conteúdo estruturado (fonte única: serviços, etapas, FlowIA, contato)
 ├── hooks/                 # useGaussField (canvas), useReveal (scroll reveal)
 ├── lib/GaussField.js      # Motor visual matemático do canvas
 └── components/
-    ├── layout/            # BrandBar, BackgroundField, Navbar, Footer
-    ├── sections/          # Hero, TelemetryTicker, Credibility, Solutions, Methodology,
-    │                      #   BrandConcept, UseCases, FinalCTA
+    ├── layout/            # BrandBar, Navbar, Footer
+    ├── sections/          # Hero, Manifesto, Solutions, Methodology, FlowIA, FinalCTA
     └── ui/                # Wordmark
 ```
 
@@ -52,11 +52,12 @@ Documentação de manutenção: [`CLAUDE.md`](CLAUDE.md) · regras de negócio:
 
 ## ✏️ Editando conteúdo (sem mexer no visual)
 
-- **Conteúdo estruturado** (soluções, casos de uso, etapas, telemetria) vive em
+- **Conteúdo estruturado** (serviços, etapas do método, capacidades do FlowIA, e-mail de contato) vive em
   [`src/data/content.js`](src/data/content.js) — editar o array atualiza todos os pontos que o consomem.
-- **Copy inline** (headlines, leads, CTAs) fica no JSX da seção; altere **apenas as strings**, nunca
-  classes ou estilos.
-- Preserve a identidade visual: paleta roxo/laranja, canvas (`GaussField`), telemetria e animações.
+- **Copy inline** (títulos de seção, leads, manifesto) fica no JSX da seção; altere **apenas as strings**,
+  nunca classes ou estilos.
+- Preserve a identidade visual: paleta roxo/laranja, canvas (`GaussField`) e as regras anti "AI slop"
+  (sem texto em gradiente — ver `CLAUDE.md` §3).
 
 Detalhes e padrões de CTA/tom de voz em [`docs/CONTENT_GUIDE.md`](docs/CONTENT_GUIDE.md).
 

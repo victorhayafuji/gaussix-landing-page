@@ -69,7 +69,8 @@ Não reduzir a GAUSSIX a nenhum destes rótulos isolados:
 ## 5. Onde aplicar estas regras
 
 - Hero (`src/components/sections/Hero.jsx`) — headline e lead.
-- Credibility (`src/components/sections/Credibility.jsx`) — posicionamento.
-- Solutions (`src/components/sections/Solutions.jsx` + `src/data/content.js`) — leque de capacidades.
-- BrandConcept (`src/components/sections/BrandConcept.jsx`) — destaque do FlowIA.
+- Manifesto (`src/components/sections/Manifesto.jsx`) — posicionamento (a metáfora ruído → direção).
+- Solutions (`src/components/sections/Solutions.jsx` + `solutions` em `src/data/content.js`) — leque de capacidades.
+- Methodology (`src/components/sections/Methodology.jsx` + `steps`) — método e entregas.
+- FlowIA (`src/components/sections/FlowIA.jsx` + `flowiaFeatures`) — destaque do produto SaaS.
 - FinalCTA (`src/components/sections/FinalCTA.jsx`) e Footer (`src/components/layout/Footer.jsx`) — fechamento e institucional.

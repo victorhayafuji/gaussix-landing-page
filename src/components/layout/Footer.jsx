@@ -1,8 +1,7 @@
 import Wordmark from '../ui/Wordmark';
-import { solutions } from '../../data/content';
+import { solutions, CONTACT_EMAIL, mailto } from '../../data/content';
 import alieviWordmark from '../../assets/alievi-wordmark.png';
 
-const CONTACT_EMAIL = 'contato@gaussix.com';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/gaussix';
 
 export default function Footer() {
@@ -15,28 +14,28 @@ export default function Footer() {
           <div className="foot-col">
             <Wordmark href="/#top" />
             <p className="foot-about">
-              Desenvolvemos dados, inteligência artificial, landing pages e produtos digitais sob medida para
-              empresas que querem vender, automatizar e decidir melhor.
+              Dados, IA, landing pages e sistemas sob medida para empresas que querem vender, operar e
+              decidir melhor.
             </p>
           </div>
           <div className="foot-col">
             <h3>Soluções</h3>
             {solutions.map((sol) => (
-              <a key={sol.gradientId} href="/#solucoes">{sol.title}</a>
+              <a key={sol.id} href="/#solucoes">{sol.title}</a>
             ))}
           </div>
           <div className="foot-col">
             <h3>Empresa</h3>
-            <a href="/#conceito">Conceito</a>
+            <a href="/#solucoes">O que fazemos</a>
             <a href="/#metodo">Método</a>
-            <a href="/#casos">Casos de uso</a>
+            <a href="/#flowia">FlowIA</a>
             <a href="/#contato">Contato</a>
           </div>
           <div className="foot-col">
             <h3>Contato</h3>
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
             <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Agendar conversa')}`}>Agendar conversa</a>
+            <a href={mailto('Falar sobre meu projeto')}>Falar sobre meu projeto</a>
           </div>
           <div className="foot-col">
             <h3>Legal</h3>
@@ -51,7 +50,7 @@ export default function Footer() {
               by <img src={alieviWordmark} alt="Alievi" className="foot-by-logo" width="61" height="13" />
             </span>
           </p>
-          <p>RUÍDO → CLAREZA → DIREÇÃO</p>
+          <p>Ruído → Clareza → Direção</p>
         </div>
       </div>
     </footer>
