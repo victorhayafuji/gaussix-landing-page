@@ -11,17 +11,14 @@ Editar o array atualiza **todos** os pontos que o consomem.
 
 | Export | Usado por | Conteúdo |
 |---|---|---|
-| `solutions` | `Solutions.jsx` (cards) e `Footer.jsx` (links de soluções) | tag, título, descrição, gradiente, delay |
-| `useCases` | `UseCases.jsx` | número, título, descrição |
-| `steps` | `Methodology.jsx` | número, título, descrição |
-| `telemetryItems` | `TelemetryTicker.jsx` | rótulos do marquee |
-
-> Os **SVGs** dos cards de soluções são bespoke e ficam inline em `Solutions.jsx`
-> (mapa `svgByGradient`, chaveado por `gradientId`). Só o **texto** vem de `content.js`.
+| `solutions` | `Solutions.jsx` (bento) e `Footer.jsx` (links de soluções) | `id`, `title` (rótulo), `headline` (benefício), `description`, `cta?`, `featured?` |
+| `steps` | `Methodology.jsx` | `num`, `title`, `desc`, `deliverable` |
+| `flowiaFeatures` | `FlowIA.jsx` | `title`, `desc` |
+| `CONTACT_EMAIL`, `mailto()` | `FlowIA.jsx`, `FinalCTA.jsx`, `Footer.jsx` | e-mail e links `mailto:` com assunto |
 
 ### Copy ainda inline (editar direto no JSX da seção)
-Eyebrows, títulos de seção (`h2`), leads, CTAs, copy institucional do Footer, navbar e a copy do
-**FlowIA** em `BrandConcept.jsx`. Editar **apenas as strings** — nunca `className`, tags ou estilos.
+Eyebrows, títulos de seção (`h2`), leads, o manifesto (`Manifesto.jsx`), copy institucional do Footer
+e navbar. Editar **apenas as strings** — nunca `className`, tags ou estilos.
 
 ---
 
@@ -31,6 +28,11 @@ Eyebrows, títulos de seção (`h2`), leads, CTAs, copy institucional do Footer,
 - Manter tom **B2B, premium, técnico-consultivo**.
 - Sem promessas garantidas, vagas ou exageradas.
 - GAUSSIX = empresa ampliada; FlowIA = produto SaaS proprietário (ver `BUSINESS_RULES.md`).
+- **Benefício primeiro:** título de serviço diz o que muda para o cliente ("Veja a operação inteira
+  num só painel."); o nome do serviço vai no rótulo (`title`).
+- **Sem fórmula repetida:** evite títulos no molde "Da X à Y" e ênfase por texto em gradiente
+  (ver regras anti "AI slop" em `CLAUDE.md` §3).
+- **Nada inventado:** sem números, clientes, depoimentos ou telas que não existam.
 
 ---
 
@@ -47,16 +49,14 @@ Eyebrows, títulos de seção (`h2`), leads, CTAs, copy institucional do Footer,
 **Proibidos** (genéricos/exagerados):
 - Saiba mais · Começar agora · Escalar meu negócio instantaneamente · Revolucionar com IA · Dominar o mercado
 
-CTAs primários (`btn btn-primary`) levam a `#contato`. Secundários (`btn btn-ghost`) levam a seções
-relevantes (`#solucoes`, `#conceito`).
+CTAs primários (`.pill`, laranja) levam a `#contato` ou a um `mailto()` com assunto. Secundários
+(`.more`, link com `›`) levam a seções relevantes (`#solucoes`, `#metodo`, `#flowia`) ou a `#contato`.
 
 ---
 
 ## 4. Naming / consistência
 
-- Títulos das soluções em `content.js` são a referência canônica.
-- A telemetria (`telemetryItems`) usa variações de marketing mais curtas/punchy — aceitável por ser
-  um marquee, mas mantenha a mesma família de termos.
+- O `title` de cada serviço em `content.js` é a referência canônica (bento e rodapé).
 - Wordmark: nome "GAUSSIX" + subtítulo "AI · DATA · SYSTEMS" (apenas copy; estilo controlado por CSS).
 
 ---

@@ -11,7 +11,8 @@ A landing é uma **SPA estática** (React + Vite). Depois do build é só HTML/C
 
 - **Sem backend, sem servidor de aplicação, sem banco de dados.**
 - **Sem formulários que enviam dados, sem `fetch`/API, sem autenticação/sessão.**
-- Único recurso de terceiros: **Google Fonts** (`fonts.googleapis.com` / `fonts.gstatic.com`).
+- **Nenhum recurso de terceiros** em runtime: desde o redesign de 2026-11 as fontes são self-hosted
+  (`@fontsource`, ver `src/fonts.js`); antes vinham do Google Fonts.
 
 Isso elimina, **por construção**, classes inteiras de ataque. O risco real fica em duas camadas que não
 estão no código: a **entrega HTTP** (headers) e o **domínio/registrar** (GoDaddy).
@@ -85,10 +86,11 @@ Headers aplicados:
 | `Permissions-Policy` | Desliga APIs sensíveis (câmera, microfone, geolocalização). |
 | `Strict-Transport-Security` | Força HTTPS (HSTS). |
 
-**CSP — nota:** está calibrada para a única dependência externa (Google Fonts). Se no futuro for
-adicionado outro recurso de terceiros (script de analytics, pixel, vídeo embutido, fonte de outro CDN),
-a CSP precisa liberar esse domínio explicitamente, senão o recurso é bloqueado. Validar a CSP em
-<https://csp-evaluator.withgoogle.com>.
+**CSP — nota:** sem dependências externas, a CSP só libera `'self'` (estilo, fonte, script) e `data:`
+para imagens (o logo da Alievi entra inline no bundle). Se no futuro for adicionado um recurso de
+terceiros (script de analytics, pixel, vídeo embutido, fonte de outro CDN), a CSP precisa liberar esse
+domínio explicitamente, senão o recurso é bloqueado — **nos dois lugares**: `public/_headers` e o
+`.htaccess` de [`DEPLOY.md`](DEPLOY.md). Validar a CSP em <https://csp-evaluator.withgoogle.com>.
 
 ---
 
@@ -106,10 +108,8 @@ a CSP precisa liberar esse domínio explicitamente, senão o recurso é bloquead
 
 ## 5. Hardening adicional (opcional, sob aprovação)
 
-- **Self-host das Google Fonts:** baixar os arquivos das fontes e servi-los do próprio domínio elimina a
-  última dependência de terceiros, permite uma CSP sem `fonts.googleapis.com`/`gstatic.com` e melhora
-  privacidade. Exige alterar [`index.html`](../index.html) (arquivo sensível — CLAUDE.md §9), por isso
-  fica como opção a executar só com aval explícito.
+- ~~**Self-host das Google Fonts**~~ — **feito** no redesign de 2026-11 (`@fontsource` + CSP sem
+  `fonts.googleapis.com`/`gstatic.com`). Nenhuma requisição a terceiros no carregamento da página.
 
 ---
 

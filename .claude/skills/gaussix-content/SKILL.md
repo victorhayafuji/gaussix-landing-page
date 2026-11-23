@@ -1,6 +1,6 @@
 ---
 name: gaussix-content
-description: Edit GAUSSIX landing page copy and content safely. Use when changing texts, headlines, solution cards, use cases, methodology steps, telemetry labels, CTAs, or any user-facing wording — without altering the visual identity.
+description: Edit GAUSSIX landing page copy and content safely. Use when changing texts, headlines, service blocks, methodology steps, FlowIA copy, CTAs, or any user-facing wording — without altering the visual identity.
 ---
 
 # GAUSSIX — edição de conteúdo
@@ -8,12 +8,14 @@ description: Edit GAUSSIX landing page copy and content safely. Use when changin
 Skill para alterar conteúdo/copy da landing page **sem mudar o visual**.
 
 ## Fonte de conteúdo
-- **Estruturado:** `src/data/content.js` (`solutions`, `useCases`, `steps`, `telemetryItems`).
-  Consumido por `Solutions.jsx`, `Footer.jsx` (links de soluções), `UseCases.jsx`,
-  `Methodology.jsx`, `TelemetryTicker.jsx`. Editar o array atualiza todos.
-- **Inline:** headlines, leads, eyebrows, CTAs, copy do FlowIA (`BrandConcept.jsx`), navbar e footer
-  institucional — editar apenas strings no JSX, sem tocar em `className`/tags/estilos.
-- Os **SVGs** dos cards de soluções são inline em `Solutions.jsx` (`svgByGradient`); só o texto é data-driven.
+- **Estruturado:** `src/data/content.js` (`solutions`, `steps`, `flowiaFeatures`, `CONTACT_EMAIL`, `mailto()`).
+  Consumido por `Solutions.jsx`, `Methodology.jsx`, `FlowIA.jsx`, `FinalCTA.jsx` e `Footer.jsx`.
+  Editar o array atualiza todos.
+- **Serviços:** `title` = rótulo canônico; `headline` = benefício primeiro; `cta` opcional (só CTAs permitidos).
+- **Inline:** títulos de seção, leads, eyebrows, manifesto (`Manifesto.jsx`), navbar e footer institucional —
+  editar apenas strings no JSX, sem tocar em `className`/tags/estilos.
+- **Anti "AI slop":** sem texto em gradiente, sem títulos na fórmula "Da X à Y", nada inventado
+  (números, clientes, telas). Ver `CLAUDE.md` §3.
 
 ## Regras de marca (ver `docs/BUSINESS_RULES.md`)
 - GAUSSIX = empresa de tecnologia aplicada (Dados, IA, automação, landing pages, sistemas, SaaS).
